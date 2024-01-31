@@ -5,7 +5,11 @@ import { useState } from 'react'
 
 const AnecdoteList = () => {
     const anecdotes = useSelector(state => state.anecdotes)
+    const filterText = useSelector((state) => state.filter)
     const dispatch = useDispatch()
+
+    const filteredAnecdotes = anecdotes.filter(a => a.content.toLowerCase()
+        .includes(filterText.toLowerCase()))
 
     const vote = (id) => {
         console.log('vote', id)
@@ -18,7 +22,7 @@ const AnecdoteList = () => {
         <div>
 
             <h2>Anecdotes</h2>
-            {sortedAnecdote.map(anecdote =>
+            {filteredAnecdotes.map(anecdote =>
                 <div key={anecdote.id}>
                     <div>
                         {anecdote.content}
