@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { voteIncrease, createAnecdote } from '../reducers/anecdoteReducer'
+import { voteIncrease, createAnecdote, voteAnecdote } from '../reducers/anecdoteReducer'
 import Filter from './Filter'
 import { useState } from 'react'
 import { sendNotification, clearNotification } from "../reducers/notificationReducer"
@@ -10,15 +10,17 @@ const AnecdoteList = () => {
 
     const dispatch = useDispatch()
 
-    const filteredAnecdotes = anecdotes.filter(a => a.content.toLowerCase()
-        .includes(filterText.toLowerCase()))
+    const filteredAnecdotes = anecdotes
+    // .filter(a => a.content.toLowerCase()
+    //     .includes(filterText.toLowerCase()))
 
-    const vote = (id) => {
-        console.log('vote', id)
-        dispatch(voteIncrease(id, 'VOTE'))
-        const foundAnecdote = filteredAnecdotes.find(a => a.id === id)
+    const vote = (anecdote) => {
+        console.log('vote', anecdote)
+        // dispatch(voteIncrease(id, 'VOTE'))
+        dispatch(voteAnecdote(anecdote))
+        const foundAnecdote = filteredAnecdotes.find(a => a.id === anecdote.id)
         dispatch(sendNotification({ message: `"${foundAnecdote ? foundAnecdote.content : null}" voted`, type: 'info' }))
-        console.log(filteredAnecdotes.find(a => a.id === id))
+        console.log(filteredAnecdotes.find(a => a.id === anecdote.id))
         setTimeout(() => {
             dispatch(clearNotification())
         }, 5000)
@@ -37,7 +39,7 @@ const AnecdoteList = () => {
                     </div>
                     <div>
                         has {anecdote.votes}
-                        <button onClick={() => vote(anecdote.id)}>vote</button>
+                        <button onClick={() => vote(anecdote)}>vote</button>
                     </div>
                 </div>
             )}
