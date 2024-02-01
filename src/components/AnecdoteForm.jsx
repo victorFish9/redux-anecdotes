@@ -16,7 +16,7 @@ const AnecdoteForm = () => {
             dispatch(clearNotification())
         }, 5000)
         //const newAnecdote = await anecdoteService.createNew(content)
-        dispatch(createAnecdote(newAnecdote))
+        dispatch(createAnecdote(content))
     }
 
     return (
